@@ -1,17 +1,25 @@
-import React, {useState, useEffect} from 'react';
-import Axios from 'axios';
+import React, {Component} from 'react';
 
-function IpServices() {
-    const [ip, setIp] = useState("null");
 
-    useEffect (() => {
-    Axios.get("https://geo.ipify.org/api/v2/country?apiKey=at_RBSlwBlijoYV1zBxGDrTYFG9QWixE")
-    .then((res) => {setIp(res.data.ip);});
-    }, []);
+class IpServices extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+        url: props.url,
+        ipAddress: null};
+    }
 
-    return(
-        <div>{ip}</div>
-    );
-};
+componentDidMount(){
+    fetch(this.state.url)
+    .then(res => res.json())
+    .then(data => this.setState({ipAddress: data.ip}));
+}
+
+    render(){
+        return(
+            <div><p>{this.state.ipAddress}</p></div>
+        );
+    };
+}
 
 export default IpServices;
